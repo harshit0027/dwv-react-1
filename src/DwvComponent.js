@@ -7,6 +7,35 @@ import dwv from 'dwv';
 import './DwvComponent.css';
 // import TagsTable from './TagsTable';
 
+const IMAGE_PROPERTIES = [{
+  type : "x",
+  property:[{
+    flag: "a",
+    value: true,
+    propertyType: "checkbox"
+    },
+    {
+      flag: "b",
+      value: false,
+      propertyType: "checkbox"
+    } 
+  ]
+},
+{
+  type : "y",
+  property:[{
+    flag: "a",
+    value: true,
+    propertyType: "radio"
+    },
+    {
+      flag: "b",
+      value: false,
+      propertyType: "radio"
+    } 
+  ]
+}]
+
 // decode query
 dwv.utils.decodeQuery = dwv.utils.base.decodeQuery;
 // progress
@@ -36,7 +65,9 @@ class DwvComponent extends React.Component {
       dataLoaded: false,
       dwvApp: null,
       tags: [],
+      caseTags: {},
       url: '',
+      currentPosition: '',
       selectedTool: 'ZoomAndPan',
       selectedShape: 'Ruler',
       showDicomTags: false,
@@ -44,30 +75,25 @@ class DwvComponent extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleUndo = this.handleUndo.bind(this);
     this.handleRedo = this.handleRedo.bind(this);
+    this.getPreviousImage = this.getPreviousImage.bind(this);
+    this.getNextImage = this.getNextImage.bind(this);
+    // this.renderTagRows = this.renderTagRows.bind(this);
     this.onStateSave = this.onStateSave.bind(this);
     this.onChangeTool = this.onChangeTool.bind(this);
     this.onChangeShape = this.onChangeShape.bind(this);
   }
   handleChange(event) {
     this.setState({
-      tools: this.state.tools,
-      loadProgress: this.state.loadProgress,
-      dataLoaded: this.state.dataLoaded,
-      dwvApp: this.state.dwvApp,
-      tags: this.state.tags,
-      url: event.target.value,
-      selectedTool: this.state.selectedTool,
-      selectedShape: this.state.selectedShape,
-      showDicomTags: this.state.showDicomTags
+      url: event.target.value
     })
   }
   render() {
 
     // const dummy = this.state.tools.map((item) => <input type="radio" value={item} name="tool" checked={this.state.selectedTool === item}>{item}</input>)
-      return (
-          <div id="dwv" className="uk-grid">
-            <div className="uk-width-2-5">
-            <from>
+    return (
+        <div id="dwv" className="uk-grid">
+          <div className="uk-width-2-5">
+            {/* <from> */}
               <div className="uk-container uk-section-primary">
                 <div className="uk-margin">                 
                   <input className="uk-input" value={this.state.url} onChange={this.handleChange}/>
@@ -116,21 +142,25 @@ class DwvComponent extends React.Component {
                   <button onClick={this.handleRedo}>Redo</button>
                 </div>
               }
-              </from>
+            {/* </from> */}
+            <div className="uk-section">
+              {this.state.currentPosition && this.state.currentPosition > 1 && <button className="uk-button" onClick={this.getPreviousImage}>Previous</button>}
+              {this.state.currentPosition && this.state.currentPosition < this.state.url.split(",").length && <button className="uk-button" onClick={this.getNextImage}>Next</button>}
             </div>
-            <div className="uk-width-3-5 uk-padding-remove">
-            {/* The canvas container for viewing the DICOM File */}
-              <div className="layerContainer">
-                  <div className="dropBox">Drag and drop data here.</div>
-                  <canvas className="imageLayer" >Only for HTML5 compatible browsers...</canvas>
-                  <div className="drawDiv" ></div>
-              </div>
-            </div>
-            <div className="history" hidden></div>
           </div>
-      );
+          <div className="uk-width-3-5 uk-padding-remove">
+          {/* The canvas container for viewing the DICOM File */}
+            <div className="layerContainer">
+                <div className="dropBox">Drag and drop data here.</div>
+                <canvas className="imageLayer" >Only for HTML5 compatible browsers...</canvas>
+                <div className="drawDiv" ></div>
+            </div>
+            </div>
+          <div className="history" hidden></div>
+        </div>
+    );
   }
-    
+
   componentDidMount() {
     var dcmApp = new dwv.App()
     dcmApp.init({
@@ -146,29 +176,68 @@ class DwvComponent extends React.Component {
     //   });
     dcmApp.addEventListener("load-end", function (event) {
       // set data loaded flag
-      self.setState({ dataLoaded: true });
+      self.setState({ dataLoaded: true, tags: dcmApp.getTags(), currentPosition: dcmApp.getViewController().getCurrentPosition().k + 1 });
       // set dicom tags
-      self.setState({ tags: dcmApp.getTags() });
+      // self.setState({  });
       // set the selected tool
-      // if (dcmApp.isMonoSliceData() && dcmApp.getImage().getNumberOfFrames()  === = 1) {
+      // if (dcmApp.isMonoSliceData() && dcmApp.getImage().getNumberOfFrames() === 1) {
       //   self.setState({selectedTool: 'ZoomAndPan'});
       // } else {
       //   self.setState({selectedTool: 'Scroll'});
       // }
     });
+
+    this.setState({ caseTags: IMAGE_PROPERTIES[0] })
     // store
     this.setState({ dwvApp: dcmApp });
+    dcmApp.addEventListener("slice-change", function () {
+      self.setState({ currentPosition: dcmApp.getViewController().getCurrentPosition().k + 1 });
+    });
   }
 
-  componentWillMount() {
-    document.addEventListener("keydown", this.handleKeyDown.bind(this));
+
+  getPreviousImage = () => {
+    console.log("previous called")
+    console.log(this.state.currentPosition)
+    if (this.state.dwvApp) {
+      let pos = this.state.dwvApp.getViewController().getCurrentPosition()
+      if (pos.k > 0) {
+        pos.k -= 1
+        this.state.dwvApp.getViewController().setCurrentPosition(pos);
+        this.setState({
+          currentPosition: pos.k + 1
+        });
+      }
+    }
   }
+
+  getNextImage = () => {
+    console.log("next called")
+    console.log(this.state.currentPosition)
+    if (this.state.dwvApp) {
+      let pos = this.state.dwvApp.getViewController().getCurrentPosition()
+      if (pos.k < this.state.url.split(",").length) {
+        pos.k += 1
+        this.state.dwvApp.getViewController().setCurrentPosition(pos);
+        this.setState({
+          currentPosition: pos.k + 1
+        });
+      }
+    }
+  }
+
+  // renderTagRows = (Tags) => {
+  //   console.log("render called")
+  //   let rows = [];
+  //   for (let i = 0; i < Tags.length; i++) {
+  //     rows.push(<TagRows name={Tags.name} value={Tags.value} />)
+  //   }
+  // }
 
   onStateSave = () => {
     if (this.state.dwvApp) {
-      console.log("called")
       this.state.dwvApp.onStateSave();
-      let fname = this.state.tags.filter(i => i.name  === 'PatientName');
+      let fname = this.state.tags.filter(i => i.name === 'PatientName');
       this.state.dwvApp.getElement("download-state").download = fname[0].value + ".json"
     }
   }
@@ -178,6 +247,7 @@ class DwvComponent extends React.Component {
     if (this.state.dwvApp) {
       this.state.dwvApp.onUndo();
     }
+
   }
 
   handleRedo = () => {
@@ -187,15 +257,15 @@ class DwvComponent extends React.Component {
   }
 
   handleKeyDown = event => {
-    if (event.shiftKey && event.which  ===  90) {
+    if (event.shiftKey && event.which === 90) {
       if (this.state.dwvApp) {
         this.setState({ selectedTool: "ZoomAndPan" });
         this.state.dwvApp.onChangeTool({ currentTarget: { value: "ZoomAndPan" } });
-      }
-    } else if (event.shiftKey && event.which  ===  68) {
-      if (this.state.dwvApp) {
-        this.setState({ selectedTool: "Draw" });
-        this.state.dwvApp.onChangeTool({ currentTarget: { value: "Draw" } });
+      } else if (event.shiftKey && event.which === 68) {
+        if (this.state.dwvApp) {
+          this.setState({ selectedTool: "Draw" });
+          this.state.dwvApp.onChangeTool({ currentTarget: { value: "Draw" } });
+        }
       }
     }
   }
@@ -234,9 +304,15 @@ class DwvComponent extends React.Component {
     // this.state.dwvApp.loadURLs(urlsArray ? urlsArray : [this.state.url]);
     // this.state.dwvApp.loadURLs(urlsArray ? urlsArray : [
     // 'https://raw.githubusercontent.com/ivmartel/dwv/master/tests/data/bbmri-53323851.dcm']);
+    /**
+     https://raw.githubusercontent.com/ivmartel/dwv/master/tests/data/bbmri-53323851.dcm,
+     https://raw.githubusercontent.com/ivmartel/dwv/master/tests/data/bbmri-53323851.dcm,
+     https://raw.githubusercontent.com/ivmartel/dwv/master/tests/data/bbmri-53323851.dcm,
+     https://raw.githubusercontent.com/ivmartel/dwv/master/tests/data/bbmri-53323851.dcm,
+     https://raw.githubusercontent.com/ivmartel/dwv/master/tests/data/bbmri-53323851.dcm,
+     https://raw.githubusercontent.com/ivmartel/dwv/master/tests/data/bbmri-53323851.dcm
+     */
   }
 };
-
-
 
 export default DwvComponent;
