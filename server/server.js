@@ -41,10 +41,9 @@ app.post("/suggestions",async (req,res)=>{
         for(i=0;i<caseTags.length;i++)obj[caseTags[i].id]=caseTags[i].text;
         for(p in obj)if(obj.hasOwnProperty(p))result.push({id:p,text:obj[p]});
         suggestion.suggestions = result;
-       
         try{
             fs.writeFileSync('server/tmp/suggestions.json',JSON.stringify(suggestion))
-            res.send(200, "Suggestions saved successfully")
+            res.status(200).send(suggestion.suggestions)
         }catch(err){
             console.log(err);
             res.send(500, err,"Something went wrong");

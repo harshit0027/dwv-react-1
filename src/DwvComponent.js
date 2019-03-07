@@ -88,7 +88,7 @@ class DwvComponent extends React.Component{
   }
 
   handleAddition(caseTag) {
-      this.setState(state => ({ caseTags: [...state.caseTags, caseTag] }));
+    this.setState(state => ({ caseTags: [...state.caseTags, caseTag] }));
   }
   
   handleDrag(caseTag, currPos, newPos) {
@@ -238,7 +238,7 @@ class DwvComponent extends React.Component{
               <div className="drawDiv" ></div>
               
             {this.state.currentPosition && this.state.currentPosition > 1 && <a uk-slidenav-previous="" className="uk-slidenav-previous uk-icon uk-slidenav-large uk-position-center-left" onClick={this.getPreviousImage}></a>}
-            {this.state.currentPosition && this.state.currentPosition < this.state.url.split(",").length && <a uk-slidenav-next="" className="uk-slidenav-next uk-icon uk-slidenav-large uk-position-center-right" onClick={this.getNextImage}></a>}
+            {this.state.currentPosition && this.state.currentPosition < this.state.dwvApp.getImage().getGeometry().getSize().getNumberOfSlices() && <a uk-slidenav-next="" className="uk-slidenav-next uk-icon uk-slidenav-large uk-position-center-right" onClick={this.getNextImage}></a>}
             
           </div>
         </div>
@@ -318,12 +318,12 @@ class DwvComponent extends React.Component{
   getNextImage= ()=>{
      if(this.state.dwvApp){
       let pos = this.state.dwvApp.getViewController().getCurrentPosition()
-      if(pos.k <this.state.url.split(",").length){
-        pos.k += 1
-        this.state.dwvApp.getViewController().setCurrentPosition(pos);
-        this.setState({
-          currentPosition: pos.k + 1
-        })
+      if(pos.k < this.state.dwvApp.getImage().getGeometry().getSize().getNumberOfSlices()){
+      pos.k += 1
+      this.state.dwvApp.getViewController().setCurrentPosition(pos);
+      this.setState({
+        currentPosition: pos.k + 1
+      })
       }
     }
   }
@@ -339,6 +339,7 @@ class DwvComponent extends React.Component{
       .post('http://localhost:4000/suggestions',{suggestions: this.state.caseTags})
       .then(res=>{
         console.log(res);
+        this.setState({suggestions : res.data},this.forceUpdate);
       })
   }
 
