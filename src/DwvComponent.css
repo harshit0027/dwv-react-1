@@ -195,3 +195,19 @@ a:hover.ReactTags__remove{
 .suggestionsList{
   margin: 0;
 }
+
+/* Modal Box styles */
+.uk-modal-title{
+  text-align: center;
+}
+.uk-modal-dialog{
+  overflow: hidden;
+  height: 100%;
+}
+.uk-modal-body {
+  padding: 10px 30px;
+}
+.uk-modal.uk-open{
+  padding-top: 15px;
+  padding-bottom: 15px;
+}

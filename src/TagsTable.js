@@ -86,49 +86,54 @@ class TagsTable extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { displayData, searchfor, rowsPerPage, page } = this.state;
+    const { displayData, searchfor, rowsPerPage, page } = this.state;   
 
     return (
-      <div className="tagsTable">
-        <form className="uk-search uk-search-default">
-          <span className="uk-search-icon-flip uk-search-icon uk-icon" uk-search-icon="" ></span>
-          <input className="uk-search-input" id="search" type="search" onChange={this.filterList} value={searchfor} />
-        </form>
+      <div className="uk-modal-body">      
+        <div className="tagsTable">
+          <form className="uk-search uk-search-default">
+            <span className="uk-search-icon-flip uk-search-icon uk-icon" uk-search-icon="" ></span>
+            <input className="uk-search-input" id="search" type="search" onChange={this.filterList} value={searchfor} />
+          </form>
+          <div className="tableContainer">
+            <table className="dataTable uk-table uk-table-small uk-table-striped">
+              <thead>
+                  <tr className="tableHeadRow">
+                      <th className="uk-width-1-2">Tag</th>
+                      <th className="uk-width-1-2">Value</th>
+                  </tr>
+              </thead>
+              <tbody>
+                {displayData.slice(page * rowsPerPage,
+                      page * rowsPerPage + rowsPerPage).map( item => {
+                  return (
+                    <tr className="tableBodyRow" key={item.group+item.element}>
+                      <td>{item.name}</td>
+                      <td>{item.value}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
 
-        <table className="dataTable uk-table uk-table-small">
-          <thead>
-              <tr className="tableHeadRow">
-                  <th>Tag</th>
-                  <th>Value</th>
-              </tr>
-          </thead>
-          <tbody>
-            {displayData.slice(page * rowsPerPage,
-                  page * rowsPerPage + rowsPerPage).map( item => {
-              return (
-                <tr className="tableBodyRow" key={item.group+item.element}>
-                  <td>{item.name}</td>
-                  <td>{item.value}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-
-        <TablePagination
-          component="div"
-          count={displayData.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          backIconButtonProps={{
-            'aria-label': 'Previous Page',
-          }}
-          nextIconButtonProps={{
-            'aria-label': 'Next Page',
-          }}
-          onChangePage={this.handleChangePage}
-          onChangeRowsPerPage={this.handleChangeRowsPerPage}
-        />
+        <div className="uk-modal-footer">
+          <TablePagination
+            component="div"
+            count={displayData.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            backIconButtonProps={{
+              'aria-label': 'Previous Page',
+            }}
+            nextIconButtonProps={{
+              'aria-label': 'Next Page',
+            }}
+            onChangePage={this.handleChangePage}
+            onChangeRowsPerPage={this.handleChangeRowsPerPage}
+          />
+        </div>
 
       </div>
     );

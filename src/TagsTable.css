@@ -1,8 +1,12 @@
 /* Style for the whole tagstable section */
+.tagsTable{
+  margin-top: 10px;
+}
 
 .tagsTable > form.uk-search.uk-search-default {
   margin: auto;
   display: flex;
+  width: 70%;
 }
 
 .tableHeadRow > th {
@@ -11,9 +15,35 @@
 
 .tableBodyRow > td {
   font-size: 14px;
+  /* text-align: center; */
+  word-break: break-word;
+}
+.tableContainer{
+  padding: 10px 0;
+  height: 555px;
+  overflow-y: auto;
 }
 
-table.dataTable {
-  margin-left: 20px;
-  margin-right: 20px;
+/* Pagination styles */
+.tagsPagination{
+  list-style: none;
+}
+ul.tagsPagination > li{
+  display: inline-block;
+  margin: 0 10px;
+}
+ul.tagsPagination > li > a{
+  color: grey;
+
+}
+ul.tagsPagination > li.activePage > a{
+  color: blue;
+}
+
+/* Modal box styles */
+.uk-modal-footer{
+  bottom: 0;
+  right: 0;
+  left: 0;
+  position: fixed;
 }

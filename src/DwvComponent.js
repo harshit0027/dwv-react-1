@@ -154,7 +154,7 @@ class DwvComponent extends React.Component{
             <br/> 
 
             <div className="uk-button-group">                 
-              {(this.state.dataLoaded) && <button className="uk-button uk-button-secondary" disabled={!this.state.dataLoaded} onClick={this.handleTagsDialogOpen}>DICOM Tags</button>}
+              {(this.state.dataLoaded) && <a href="#DCIM" className="uk-button uk-button-secondary" disabled={!this.state.dataLoaded} onClick={this.handleTagsDialogOpen} uk-toggle="">DICOM Tags</a>}
               {(this.state.dataLoaded) && <a className="download-state uk-button uk-button-primary" onClick={this.onStateSave}>Save</a>}
             </div>
           </div>           
@@ -215,17 +215,14 @@ class DwvComponent extends React.Component{
             </div>
           </div>
 
-          <Dialog open={this.state.showDicomTags} onClose={this.handleTagsDialogClose}>
-              <Toolbar>
-                <IconButton color="inherit" onClick={this.handleTagsDialogClose} aria-label="Close">
-                  <CloseIcon />
-                </IconButton>
-                <Typography variant="title" color="inherit">
-                  DICOM Tags
-                </Typography>
-              </Toolbar>
-            <TagsTable data={this.state.tags} ></TagsTable>
-          </Dialog>
+
+          <div id="DCIM" uk-modal="">
+            <div className="uk-modal-dialog">
+              <button className="uk-modal-close-default uk-close uk-icon" type="button" uk-close=""></button>
+                <h2 className="uk-modal-title">DICOM Tags</h2>
+              <TagsTable data={this.state.tags} ></TagsTable>
+            </div>
+          </div>
 
         </div>
         <div className="loaderlist" hidden></div>
