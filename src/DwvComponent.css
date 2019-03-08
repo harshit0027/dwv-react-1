@@ -166,6 +166,7 @@ span.radios label {
 }
 .ReactTags__tagInputField{
   height: 40px;
+  width: 100%;
 }
 .ReactTags__tag{
   color: white;
@@ -193,9 +194,10 @@ a:hover.ReactTags__remove{
   margin-left: -30px;
   border: 1px solid lightgrey;
   overflow-wrap: break-word;
+  background-color: #ffb7b8;
 }
 .ReactTags__suggestions > ul > li.ReactTags__activeSuggestion{
-  background-color: #ffb7b8;
+  background-color: #ee9d9e;
 }
 /* Suggestion Section  */
 .suggestionCard{

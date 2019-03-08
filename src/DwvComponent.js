@@ -184,7 +184,7 @@ class DwvComponent extends React.Component{
                 classNames={{
                   tags:'uk-grid uk-flex-center',
                   tag:'ReactTags__tag uk-width-auto',
-                  selected:'ReactTags__selected uk-width-auto',
+                  selected:'ReactTags__selected uk-width-1-1',
                 }}
                 suggestions={suggestions}
                 handleDelete={this.handleDelete}
