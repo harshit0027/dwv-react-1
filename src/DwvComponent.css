@@ -1,7 +1,12 @@
+*{
+  box-sizing: border-box;
+}
+
 #dwv {
   font-family: Arial, Helvetica, sans-serif;
-  height: 90%; }
-
+  height: 100%; 
+  background-color: #333;
+}
 .button-row {
   text-align: center;
 }
@@ -14,23 +19,23 @@
 
 .uk-radio{
   margin-right: 10px;
-  margin-left: 30px;
+  margin-left: 10px;
   margin-bottom: 10px;
   margin-top: 10px;
 }
 
 .sectionDiv{
   background-color: black;
-  margin-left: 30px;
-  margin-top:20px;
-  margin-right:20px;
-  margin-bottom:20px;
-  padding-left:10px;
-  padding-right:10px;
+  padding:10px;
+  color: #111;
 }
 
 #urlInput{
   margin-left: 30px;
+}
+
+.uk-width-3-5.uk-position-relative.uk-light{
+  padding-left: 0;
 }
 
 /* Layers */
@@ -45,8 +50,181 @@
 
 /* drag&drop */
 .dropBox {
-    border: 5px dashed #ccc;
-    margin: auto;
-    text-align: center; vertical-align: middle;
-    background: white; color: grey; }
+  border: 5px dashed #ccc;
+  margin: auto;
+  text-align: center; vertical-align: middle;
+  background: #333;; color: grey; 
+  width: 200px;
+  height: 200px;
+}
 .dropBox.hover { border: 5px dashed #cc0; }
+
+/* labels */
+label.uk-label{
+  margin: 0.5em 0.5em 0 0.5em;
+  padding: 0.5em;
+  background-color: transparent;
+  color: black;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+/* Container section */
+.sectionsContainer{
+  overflow: auto;
+  height: 100%;
+}
+
+/* Button groups */
+div.uk-button-group{
+  margin: 0.5em;
+}
+
+/* Button */
+.uk-button {
+  margin:0.5em;
+}
+.actionBttn{
+  background-color:#35283b;
+  color: white;
+}
+.actionBttn:hover,
+.actionBttn:active,
+.actionBttn:focus{
+  background-color:#231b27;
+}
+/* Disabled button */
+button.uk-button.disabled {
+  /* background-color: #fff; */
+}
+
+/* Sections have separate colors */
+.urlSection {
+  background-color: #3b8fff ;
+}
+.toolSection {
+  background-color: #2ec5c0 ;
+}
+.actSection {
+  background-color: #89669e ;
+}
+.tagSection {
+  background-color: #ff7575 ;
+}
+.suggestionSection{
+  background-color: #fcab52 ;
+}
+
+/* radio buttons */
+.uk-radio {
+  border-color: #144432;
+  background-color: rgb(202, 201, 201);
+}
+
+.uk-radio:checked,
+.uk-radio:checked:focus {
+  border-color: #144432;
+  background-color: #144432;
+}
+
+/* span to cover the input radios */
+span.radios{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+span.radios label {
+  text-align: end;
+}
+
+/* save button style */
+.urlSectionBttn{
+  background-color: #195b9d;
+  color: #fff;
+}
+.urlSectionBttn:hover,
+.urlSectionBttn:active,
+.urlSectionBttn:focus{
+  background-color: #164d85;
+  color: #fff;
+}
+
+/*URL input field  */
+.inputField{
+  height: 40px;
+  width:50%;
+}
+
+.suggestionCard {
+  cursor: pointer;
+}
+
+/* ReactTags  */
+.ReactTags__tagInput{
+  height: auto;
+  margin-top: 15px;
+}
+.ReactTags__tagInputField{
+  height: 40px;
+  width: 100%;
+}
+.ReactTags__tag{
+  color: white;
+  padding: 6px;
+  background-color: #532a2a;
+  border-radius: 5px;
+  margin: 2px;
+  overflow-wrap: break-word;
+  display: inline-block;
+}
+.ReactTags__remove{
+  margin-left: 4px;
+}
+a:hover.ReactTags__remove{
+  text-decoration: none;
+}
+.ReactTags__suggestions{
+  margin: 5px;
+  
+}
+.ReactTags__suggestions > ul > li{
+  list-style: none;
+  padding: 3px;
+  margin: 2px;
+  margin-left: -30px;
+  border: 1px solid lightgrey;
+  overflow-wrap: break-word;
+  background-color: #ffb7b8;
+}
+.ReactTags__suggestions > ul > li.ReactTags__activeSuggestion{
+  background-color: #ee9d9e;
+}
+/* Suggestion Section  */
+.suggestionCard{
+  background-color: #fdd2a5;
+  margin: 5px;
+  padding: 6px;
+  border-radius: 5px;
+  overflow-wrap: break-word;
+}
+.suggestionsList{
+  margin: 0;
+}
+
+/* Modal Box styles */
+.uk-modal-title{
+  text-align: center;
+}
+.uk-modal-dialog{
+  overflow: hidden;
+  height: 95%;
+  margin: auto;
+}
+.uk-modal-body {
+  padding: 10px 30px;
+}
+#DCIM.uk-modal.uk-open{
+  padding-top: 15px;
+  padding-bottom: 15px;
+  display: flex;
+}

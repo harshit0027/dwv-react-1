@@ -1,13 +1,7 @@
 import React from 'react';
 import './DwvComponent.css';
 import dwv from 'dwv';
-import Dialog from '@material-ui/core/Dialog';
-import AppBar from '@material-ui/core/AppBar';
 import TagsTable from './TagsTable';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-import Typography from '@material-ui/core/Typography';
-import Toolbar from '@material-ui/core/Toolbar';
 import { WithContext as ReactTags } from 'react-tag-input';
 import axios from 'axios';
  
@@ -134,40 +128,30 @@ class DwvComponent extends React.Component{
       }
     }
     
-    tagElements = remainingTags.filter(i=>this.state.caseTags.indexOf(i)=== -1).map((i,index)=><p id={i.id} key={index} onClick={this.handleSuggestions}>{i.text}</p>)
-    
-    var background={
-      backgroundColor: '#333333'
-    }
-    
-    var imageLayerStyle = {
-      height : '100%',
-      backgroundColor : '#333333'
-    }
+    tagElements = remainingTags.filter(i=>this.state.caseTags.indexOf(i)=== -1).map((i,index)=><span className="suggestionCard uk-width-auto" id={i.id} key={index} onClick={this.handleSuggestions}>{i.text}</span>)
+   
     const { caseTags, suggestions } = this.state;
     return (
-      <div id="dwv" className="uk-grid" style={imageLayerStyle}>
-        <div className="uk-width-2-5">
-          <div className="sectionDiv">
-            <label className="uk-label uk-label-primary">Enter Url:</label>
-            <input className="uk-input" value={this.state.url} onChange={this.handleChange}/>
+      <div id="dwv" className="uk-grid">
+        <div className="uk-width-2-5 sectionsContainer">
+          <div className="sectionDiv urlSection">
+            <input placeholder="Enter URL" className="inputField" value={this.state.url} onChange={this.handleChange}/>
+            <button className="uk-button uk-button-secondary" onClick={this.loadFromURL}>Load Image</button>
             <br/> 
 
             <div className="uk-button-group">                 
-              <button className="uk-button uk-button-secondary" onClick={this.loadFromURL}>LoadImage</button>
-              <button className="uk-button uk-button-secondary" disabled={!this.state.dataLoaded} onClick={this.handleTagsDialogOpen}>DICOM Tags</button>
+              {(this.state.dataLoaded) && <a href="#DCIM" className="uk-button urlSectionBttn" disabled={!this.state.dataLoaded} onClick={this.handleTagsDialogOpen} uk-toggle="">DICOM Tags</a>}
+              {(this.state.dataLoaded) && <a className="download-state urlSectionBttn uk-button" onClick={this.onStateSave}>Save</a>}
             </div>
-            {(this.state.dataLoaded) && <a className="download-state" onClick={this.onStateSave}>Save</a>}
           </div>           
           
 
-          <div className="sectionDiv">
-            <div hidden={!this.state.dataLoaded}>
+          <div className="sectionDiv toolSection" hidden={!this.state.dataLoaded}>
+            <div >
               <label className="uk-label uk-label-primary">Select a tool:</label>
               <br/>
               <input className="uk-radio" onChange={this.onChangeTool} type="radio" value="ZoomAndPan" name="tool" checked={this.state.selectedTool === 'ZoomAndPan'}/>Zoom and Pan
               <input className="uk-radio" onChange={this.onChangeTool} type="radio" value="Scroll" name="tool" checked={this.state.selectedTool === 'Scroll'}/>Scroll
-              <br/>
               <input className="uk-radio" onChange={this.onChangeTool} type="radio" value="WindowLevel" name="tool" checked={this.state.selectedTool === 'WindowLevel'}/>WindowLevel
               <input className="uk-radio" onChange={this.onChangeTool} type="radio" value="Draw" name="tool" checked={this.state.selectedTool === 'Draw'}/>Draw
             </div>
@@ -186,17 +170,22 @@ class DwvComponent extends React.Component{
             </div>
           </div>
           
-          <div className="sectionDiv" hidden={!this.state.dataLoaded}>
-            <label className="uk-label uk-label-primary">Actions</label> 
+          <div className="sectionDiv actSection" hidden={!this.state.dataLoaded}>
+            <label className="uk-label">Actions</label> 
             <br/>
-            <button className="uk-button uk-button-secondary" onClick={this.onReset}>Reset Zoom</button>
-            <button className="uk-button uk-button-secondary" onClick={this.handleUndo}>Undo</button>
-            <button className="uk-button uk-button-secondary" onClick={this.handleRedo}>Redo</button>
+            <button className="uk-button actionBttn" onClick={this.onReset}>Reset Zoom</button>
+            <button className="uk-button actionBttn" onClick={this.handleUndo}>Undo</button>
+            <button className="uk-button actionBttn" onClick={this.handleRedo}>Redo</button>
           </div>
             
-          <div className="sectionDiv" hidden={!this.state.dataLoaded}>
-            <label className="uk-label uk-label-primary">Additional Tags:</label>
+          <div className="sectionDiv tagSection" hidden={!this.state.dataLoaded}>
+            <label className="uk-label">Additional Tags</label>
             <ReactTags tags={caseTags}
+                classNames={{
+                  tags:'uk-grid uk-flex-center',
+                  tag:'ReactTags__tag uk-width-auto',
+                  selected:'ReactTags__selected uk-width-1-1',
+                }}
                 suggestions={suggestions}
                 handleDelete={this.handleDelete}
                 handleAddition={this.handleAddition}
@@ -204,39 +193,36 @@ class DwvComponent extends React.Component{
                 delimiters={delimiters} />
           </div>
           
-          <div className="sectionDiv" hidden={!this.state.dataLoaded}>
-            {tagElements}
+          <div className="sectionDiv suggestionSection" hidden={!this.state.dataLoaded }>
+            <label className="uk-label">Suggestions</label> 
+            <br/>
+            <div className="suggestionsList uk-grid uk-flex-center" >
+              {tagElements}
+            </div>
           </div>
 
-          <Dialog open={this.state.showDicomTags} onClose={this.handleTagsDialogClose}>
-            <AppBar >
-              <Toolbar>
-                <IconButton color="inherit" onClick={this.handleTagsDialogClose} aria-label="Close">
-                  <CloseIcon />
-                </IconButton>
-                <Typography variant="title" color="inherit">
-                  DICOM Tags
-                </Typography>
-              </Toolbar>
-            </AppBar>
-            <TagsTable data={this.state.tags} ></TagsTable>
-          </Dialog>
+
+          <div id="DCIM" uk-modal="">
+            <div className="uk-modal-dialog">
+              <button className="uk-modal-close-default uk-close uk-icon" type="button" uk-close=""></button>
+              <h2 className="uk-modal-title">DICOM Tags</h2>
+              <TagsTable data={this.state.tags}></TagsTable>
+            </div>
+          </div>
 
         </div>
         <div className="loaderlist" hidden></div>
         <div className="imagefolderdiv" hidden></div>
 
-        <div className="uk-width-3-5 ">
+        <div className="uk-width-3-5 uk-position-relative uk-light">
           <div className="layerContainer">
-              <div className="dropBox" style={background}>Drag and drop dcm file here.</div>
+              <div className="dropBox">Drag and drop dcm file here.</div>
               <canvas className="imageLayer" >Only for HTML5 compatible browsers...</canvas>
               <div className="drawDiv" ></div>
-          </div>
-          
-          <div className="uk-section">
-            {this.state.currentPosition && this.state.currentPosition > 1 && <button className="uk-button" onClick={this.getPreviousImage}>Previous</button>}
-            {/* {this.state.currentPosition && this.state.currentPosition < this.state.url.split(",").length && <button className="uk-button" onClick={this.getNextImage}>Next</button>} */}
-            {this.state.currentPosition && this.state.currentPosition < this.state.dwvApp.getImage().getGeometry().getSize().getNumberOfSlices() && <button className="uk-button" onClick={this.getNextImage}>Next</button>}
+              
+            {this.state.currentPosition && this.state.currentPosition > 1 && <a uk-slidenav-previous="" className="uk-slidenav-previous uk-icon uk-slidenav-large uk-position-center-left" onClick={this.getPreviousImage}></a>}
+            {this.state.currentPosition && this.state.currentPosition < this.state.dwvApp.getImage().getGeometry().getSize().getNumberOfSlices() && <a uk-slidenav-next="" className="uk-slidenav-next uk-icon uk-slidenav-large uk-position-center-right" onClick={this.getNextImage}></a>}
+            
           </div>
         </div>
                         
@@ -253,8 +239,8 @@ class DwvComponent extends React.Component{
       .catch(function (error) {
         console.log(error);
       })
-    
-    var dcmApp = new dwv.App()
+
+      var dcmApp = new dwv.App()
     var options = {
         "containerDivId":"dwv",
         "tools": this.state.tools,

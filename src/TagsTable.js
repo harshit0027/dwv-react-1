@@ -1,36 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-
-import InputAdornment from '@material-ui/core/InputAdornment';
-import TextField from '@material-ui/core/TextField';
-
-import Search from '@material-ui/icons/Search';
-
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import TablePagination from '@material-ui/core/TablePagination';
-
-const styles = theme => ({
-  flex: {
-    flex: 1,
-  },
-  spacer: {
-    flex: '1 1 100%',
-  },
-  row: {
-    '&:nth-of-type(odd)': {
-      backgroundColor: theme.palette.background.default,
-    },
-  },
-  searchField: {
-    backgroundColor: 'white',
-    marginLeft: 20
-  }
-});
+import './TagsTable.css'
+import ReactPaginate from 'react-paginate';
 
 class TagsTable extends React.Component {
 
@@ -79,74 +50,88 @@ class TagsTable extends React.Component {
     this.setState({ page });
   }
 
+  handlePageClick = (page) => {
+    let pageNum = page.selected;
+    this.setState({ page : pageNum});
+  }
+
   handleChangeRowsPerPage = event => {
     this.setState({ rowsPerPage: event.target.value });
   }
 
   render() {
     const { classes } = this.props;
-    const { displayData, searchfor, rowsPerPage, page } = this.state;
+    const { displayData, searchfor, rowsPerPage, page } = this.state;   
 
     return (
-      <div className={classes.container}>
-        <TextField
-          id="search"
-          type="search"
-          value={searchfor}
-          className={classes.searchField}
-          onChange={this.filterList}
-          margin="normal"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <Search />
-              </InputAdornment>
-            )
-          }}
-        />
+      <div className="uk-modal-body">      
+        <div className="tagsTable">
+          <form className="uk-search uk-search-default">
+            <span className="uk-search-icon-flip uk-search-icon uk-icon" uk-search-icon="" ></span>
+            <input className="uk-search-input" id="search" type="search" onChange={this.filterList} value={searchfor} />
+          </form>
+          <div className="tableContainer">
+            <table className="dataTable uk-table uk-table-small uk-table-striped">
+              <thead>
+                  <tr className="tableHeadRow">
+                      <th className="uk-width-1-2">Tag</th>
+                      <th className="uk-width-1-2">Value</th>
+                  </tr>
+              </thead>
+              <tbody>
+                {displayData.slice(page * rowsPerPage,
+                      page * rowsPerPage + rowsPerPage).map( item => {
+                  return (
+                    <tr className="tableBodyRow" key={item.group+item.element}>
+                      <td>{item.name}</td>
+                      <td>{item.value}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
 
-        <Table className={classes.table}>
-          <TableHead>
-            <TableRow>
-              <TableCell>Tag</TableCell>
-              <TableCell>Value</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-          {displayData.slice(page * rowsPerPage,
-                page * rowsPerPage + rowsPerPage).map( item => {
-            return (
-              <TableRow className={classes.row} key={item.group+item.element}>
-                <TableCell>{item.name}</TableCell>
-                <TableCell numeric>{item.value}</TableCell>
-              </TableRow>
-            );
-          })}
-          </TableBody>
-        </Table>
+        <div className="uk-modal-footer">
+          <ReactPaginate
+            previousLabel={'Previous'}
+            nextLabel={'Next'}
+            breakLabel={'...'}
+            breakClassName={'multiple'}
+            pageCount={displayData.length/10}
+            marginPagesDisplayed={1}
+            pageRangeDisplayed={2}
+            onPageChange={this.handlePageClick}
+            containerClassName={'tagsPagination'}
+            subContainerClassName={'pages pagination'}
+            activeClassName={'activePage'}
+            page={page}
+          /> 
 
-        <TablePagination
-          component="div"
-          count={displayData.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          backIconButtonProps={{
-            'aria-label': 'Previous Page',
-          }}
-          nextIconButtonProps={{
-            'aria-label': 'Next Page',
-          }}
-          onChangePage={this.handleChangePage}
-          onChangeRowsPerPage={this.handleChangeRowsPerPage}
-        />
+          {/* <TablePagination
+            component="div"
+            count={displayData.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            backIconButtonProps={{
+              'aria-label': 'Previous Page',
+            }}
+            nextIconButtonProps={{
+              'aria-label': 'Next Page',
+            }}
+            onChangePage={this.handleChangePage}
+            onChangeRowsPerPage={this.handleChangeRowsPerPage}
+          /> */}
+        </div>
 
       </div>
     );
   }
 }
 
-TagsTable.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
+// TagsTable.propTypes = {
+//   classes: PropTypes.object.isRequired,
+// };
 
-export default withStyles(styles)(TagsTable);
+export default (TagsTable);
