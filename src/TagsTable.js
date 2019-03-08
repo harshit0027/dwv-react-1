@@ -43,20 +43,17 @@ class TagsTable extends React.Component {
       }
       return false;
     });
-    this.setState({searchfor: search, displayData: updatedList});
-  }
-
-  handleChangePage = (event, page) => {
-    this.setState({ page });
+    this.handlePageClick(0);
+    this.setState({searchfor: search, displayData: updatedList,page:0});
   }
 
   handlePageClick = (page) => {
-    let pageNum = page.selected;
-    this.setState({ page : pageNum});
-  }
-
-  handleChangeRowsPerPage = event => {
-    this.setState({ rowsPerPage: event.target.value });
+    if(typeof(page)=="number"){
+      this.setState({ page });
+    }else{
+      let selected = page.selected;
+      this.setState({ page : selected});
+    }
   }
 
   render() {
@@ -66,10 +63,10 @@ class TagsTable extends React.Component {
     return (
       <div className="uk-modal-body">      
         <div className="tagsTable">
-          <form className="uk-search uk-search-default">
+          <div className="uk-search uk-search-default">
             <span className="uk-search-icon-flip uk-search-icon uk-icon" uk-search-icon="" ></span>
             <input className="uk-search-input" id="search" type="search" onChange={this.filterList} value={searchfor} />
-          </form>
+          </div>
           <div className="tableContainer">
             <table className="dataTable uk-table uk-table-small uk-table-striped">
               <thead>
@@ -88,7 +85,7 @@ class TagsTable extends React.Component {
                     </tr>
                   );
                 })}
-              </tbody>
+              </tbody> 
             </table>
           </div>
         </div>
@@ -101,37 +98,18 @@ class TagsTable extends React.Component {
             breakClassName={'multiple'}
             pageCount={displayData.length/10}
             marginPagesDisplayed={1}
-            pageRangeDisplayed={2}
+            pageRangeDisplayed={2} 
             onPageChange={this.handlePageClick}
             containerClassName={'tagsPagination'}
             subContainerClassName={'pages pagination'}
             activeClassName={'activePage'}
-            page={page}
+            forcePage={page}
           /> 
-
-          {/* <TablePagination
-            component="div"
-            count={displayData.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            backIconButtonProps={{
-              'aria-label': 'Previous Page',
-            }}
-            nextIconButtonProps={{
-              'aria-label': 'Next Page',
-            }}
-            onChangePage={this.handleChangePage}
-            onChangeRowsPerPage={this.handleChangeRowsPerPage}
-          /> */}
         </div>
 
       </div>
     );
   }
 }
-
-// TagsTable.propTypes = {
-//   classes: PropTypes.object.isRequired,
-// };
 
 export default (TagsTable);

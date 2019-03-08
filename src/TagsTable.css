@@ -3,7 +3,7 @@
   margin-top: 10px;
 }
 
-.tagsTable > form.uk-search.uk-search-default {
+.tagsTable > div.uk-search.uk-search-default {
   margin: auto;
   display: flex;
   width: 70%;
