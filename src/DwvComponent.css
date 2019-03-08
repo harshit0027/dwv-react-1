@@ -84,7 +84,15 @@ div.uk-button-group{
 .uk-button {
   margin:0.5em;
 }
-
+.actionBttn{
+  background-color:#35283b;
+  color: white;
+}
+.actionBttn:hover,
+.actionBttn:active,
+.actionBttn:focus{
+  background-color:#231b27;
+}
 /* Disabled button */
 button.uk-button.disabled {
   /* background-color: #fff; */
@@ -130,13 +138,15 @@ span.radios label {
 }
 
 /* save button style */
-.uk-button-primary.download-state{
+.urlSectionBttn{
   background-color: #195b9d;
+  color: #fff;
 }
-.uk-button-primary.download-state:hover,
-.uk-button-primary.download-state:active,
-.uk-button-primary.download-state:focus{
+.urlSectionBttn:hover,
+.urlSectionBttn:active,
+.urlSectionBttn:focus{
   background-color: #164d85;
+  color: #fff;
 }
 
 /*URL input field  */

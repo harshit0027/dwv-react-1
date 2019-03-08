@@ -140,8 +140,8 @@ class DwvComponent extends React.Component{
             <br/> 
 
             <div className="uk-button-group">                 
-              {(this.state.dataLoaded) && <a href="#DCIM" className="uk-button uk-button-secondary" disabled={!this.state.dataLoaded} onClick={this.handleTagsDialogOpen} uk-toggle="">DICOM Tags</a>}
-              {(this.state.dataLoaded) && <a className="download-state uk-button uk-button-primary" onClick={this.onStateSave}>Save</a>}
+              {(this.state.dataLoaded) && <a href="#DCIM" className="uk-button urlSectionBttn" disabled={!this.state.dataLoaded} onClick={this.handleTagsDialogOpen} uk-toggle="">DICOM Tags</a>}
+              {(this.state.dataLoaded) && <a className="download-state urlSectionBttn uk-button" onClick={this.onStateSave}>Save</a>}
             </div>
           </div>           
           
@@ -173,9 +173,9 @@ class DwvComponent extends React.Component{
           <div className="sectionDiv actSection" hidden={!this.state.dataLoaded}>
             <label className="uk-label">Actions</label> 
             <br/>
-            <button className="uk-button uk-button-secondary" onClick={this.onReset}>Reset Zoom</button>
-            <button className="uk-button uk-button-secondary" onClick={this.handleUndo}>Undo</button>
-            <button className="uk-button uk-button-secondary" onClick={this.handleRedo}>Redo</button>
+            <button className="uk-button actionBttn" onClick={this.onReset}>Reset Zoom</button>
+            <button className="uk-button actionBttn" onClick={this.handleUndo}>Undo</button>
+            <button className="uk-button actionBttn" onClick={this.handleRedo}>Redo</button>
           </div>
             
           <div className="sectionDiv tagSection" hidden={!this.state.dataLoaded}>

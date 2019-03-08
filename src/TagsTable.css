@@ -59,6 +59,14 @@ ul.tagsPagination > li.activePage > a{
   position: fixed;
 }
 
+ul.tagsPagination > li > a:hover{
+  color: #373737;
+}
+
+ul.tagsPagination > li.disabled > a:hover{
+  color: #808080;
+}
+
 h2.uk-modal-title{
   margin: 10px 10px 0px 10px;
 }
