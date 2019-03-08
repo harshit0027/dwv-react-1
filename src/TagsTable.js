@@ -1,37 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './TagsTable.css'
-import { withStyles } from '@material-ui/core/styles';
-
-import InputAdornment from '@material-ui/core/InputAdornment';
-import TextField from '@material-ui/core/TextField';
-
-import Search from '@material-ui/icons/Search';
-
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import TablePagination from '@material-ui/core/TablePagination';
-
-const styles = theme => ({
-  flex: {
-    flex: 1,
-  },
-  spacer: {
-    flex: '1 1 100%',
-  },
-  row: {
-    '&:nth-of-type(odd)': {
-      backgroundColor: theme.palette.background.default,
-    },
-  },
-  searchField: {
-    backgroundColor: 'white',
-    marginLeft: 20
-  }
-});
+import ReactPaginate from 'react-paginate';
 
 class TagsTable extends React.Component {
 
@@ -80,6 +50,11 @@ class TagsTable extends React.Component {
     this.setState({ page });
   }
 
+  handlePageClick = (page) => {
+    let pageNum = page.selected;
+    this.setState({ page : pageNum});
+  }
+
   handleChangeRowsPerPage = event => {
     this.setState({ rowsPerPage: event.target.value });
   }
@@ -119,7 +94,22 @@ class TagsTable extends React.Component {
         </div>
 
         <div className="uk-modal-footer">
-          <TablePagination
+          <ReactPaginate
+            previousLabel={'Previous'}
+            nextLabel={'Next'}
+            breakLabel={'...'}
+            breakClassName={'multiple'}
+            pageCount={displayData.length/10}
+            marginPagesDisplayed={1}
+            pageRangeDisplayed={2}
+            onPageChange={this.handlePageClick}
+            containerClassName={'tagsPagination'}
+            subContainerClassName={'pages pagination'}
+            activeClassName={'activePage'}
+            page={page}
+          /> 
+
+          {/* <TablePagination
             component="div"
             count={displayData.length}
             rowsPerPage={rowsPerPage}
@@ -132,7 +122,7 @@ class TagsTable extends React.Component {
             }}
             onChangePage={this.handleChangePage}
             onChangeRowsPerPage={this.handleChangeRowsPerPage}
-          />
+          /> */}
         </div>
 
       </div>
@@ -140,8 +130,8 @@ class TagsTable extends React.Component {
   }
 }
 
-TagsTable.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
+// TagsTable.propTypes = {
+//   classes: PropTypes.object.isRequired,
+// };
 
-export default withStyles(styles)(TagsTable);
+export default (TagsTable);

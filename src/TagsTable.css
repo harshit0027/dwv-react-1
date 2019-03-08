@@ -15,29 +15,40 @@
 
 .tableBodyRow > td {
   font-size: 14px;
-  /* text-align: center; */
   word-break: break-word;
 }
 .tableContainer{
   padding: 10px 0;
-  height: 555px;
+  height: 500px;
   overflow-y: auto;
 }
 
 /* Pagination styles */
 .tagsPagination{
   list-style: none;
+  font-size: 15px;
+  display: flex;
+  padding: 0;
+  justify-content: space-evenly;
 }
 ul.tagsPagination > li{
   display: inline-block;
   margin: 0 10px;
 }
 ul.tagsPagination > li > a{
-  color: grey;
-
+  color: #808080;
+  text-decoration: none;
+  outline: none;
+}
+ul.tagsPagination > li.multiple > a{
+  pointer-events: none;
+  cursor: default;
 }
 ul.tagsPagination > li.activePage > a{
-  color: blue;
+  background-color: #808080;
+  padding: 5px;
+  border-radius: 10px;
+  color: #fff;
 }
 
 /* Modal box styles */
@@ -46,4 +57,8 @@ ul.tagsPagination > li.activePage > a{
   right: 0;
   left: 0;
   position: fixed;
+}
+
+h2.uk-modal-title{
+  margin: 10px 10px 0px 10px;
 }

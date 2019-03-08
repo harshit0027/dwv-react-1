@@ -1,13 +1,7 @@
 import React from 'react';
 import './DwvComponent.css';
 import dwv from 'dwv';
-import Dialog from '@material-ui/core/Dialog';
-import AppBar from '@material-ui/core/AppBar';
 import TagsTable from './TagsTable';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-import Typography from '@material-ui/core/Typography';
-import Toolbar from '@material-ui/core/Toolbar';
 import { WithContext as ReactTags } from 'react-tag-input';
 import axios from 'axios';
  
@@ -135,15 +129,7 @@ class DwvComponent extends React.Component{
     }
     
     tagElements = remainingTags.filter(i=>this.state.caseTags.indexOf(i)=== -1).map((i,index)=><span className="suggestionCard uk-width-auto" id={i.id} key={index} onClick={this.handleSuggestions}>{i.text}</span>)
-    
-    var background={
-      backgroundColor: '#333333'
-    }
-    
-    var imageLayerStyle = {
-      height : '100%',
-      backgroundColor : '#333333'
-    }
+   
     const { caseTags, suggestions } = this.state;
     return (
       <div id="dwv" className="uk-grid">
@@ -219,8 +205,8 @@ class DwvComponent extends React.Component{
           <div id="DCIM" uk-modal="">
             <div className="uk-modal-dialog">
               <button className="uk-modal-close-default uk-close uk-icon" type="button" uk-close=""></button>
-                <h2 className="uk-modal-title">DICOM Tags</h2>
-              <TagsTable data={this.state.tags} ></TagsTable>
+              <h2 className="uk-modal-title">DICOM Tags</h2>
+              <TagsTable data={this.state.tags}></TagsTable>
             </div>
           </div>
 
@@ -230,7 +216,7 @@ class DwvComponent extends React.Component{
 
         <div className="uk-width-3-5 uk-position-relative uk-light">
           <div className="layerContainer">
-              <div className="dropBox" style={background}>Drag and drop dcm file here.</div>
+              <div className="dropBox">Drag and drop dcm file here.</div>
               <canvas className="imageLayer" >Only for HTML5 compatible browsers...</canvas>
               <div className="drawDiv" ></div>
               

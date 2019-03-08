@@ -50,10 +50,13 @@
 
 /* drag&drop */
 .dropBox {
-    border: 5px dashed #ccc;
-    margin: auto;
-    text-align: center; vertical-align: middle;
-    background: white; color: grey; }
+  border: 5px dashed #ccc;
+  margin: auto;
+  text-align: center; vertical-align: middle;
+  background: #333;; color: grey; 
+  width: 200px;
+  height: 200px;
+}
 .dropBox.hover { border: 5px dashed #cc0; }
 
 /* labels */
@@ -202,12 +205,14 @@ a:hover.ReactTags__remove{
 }
 .uk-modal-dialog{
   overflow: hidden;
-  height: 100%;
+  height: 95%;
+  margin: auto;
 }
 .uk-modal-body {
   padding: 10px 30px;
 }
-.uk-modal.uk-open{
+#DCIM.uk-modal.uk-open{
   padding-top: 15px;
   padding-bottom: 15px;
+  display: flex;
 }
