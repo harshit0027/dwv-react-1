@@ -50,7 +50,9 @@ ul.tagsPagination > li.activePage > a{
   border-radius: 10px;
   color: #fff;
 }
-
+ul.tagsPagination > li.activePage > a:hover{
+  color: #fff
+}
 /* Modal box styles */
 .uk-modal-footer{
   bottom: 0;
@@ -61,10 +63,6 @@ ul.tagsPagination > li.activePage > a{
 
 ul.tagsPagination > li > a:hover{
   color: #373737;
-}
-
-ul.tagsPagination > li.disabled > a:hover{
-  color: #808080;
 }
 
 h2.uk-modal-title{
